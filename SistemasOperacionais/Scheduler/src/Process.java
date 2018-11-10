@@ -14,6 +14,7 @@ public class Process {
     private Integer totalTime;
     private Integer remainingTime;
     private Integer insertionTime;
+    private Integer sleppingTime = 0;
     private Boolean finished;
 
     public Process(Integer pid, Integer priority, Integer totalTime, Integer currentTime) {
@@ -52,20 +53,28 @@ public class Process {
     public Integer getRemainingTime() {
         return remainingTime;
     }
-    
+
     public Integer getInsertionTime(){
         return insertionTime;
     }
-    
+
+    public Integer getSleppingTime() {
+        return sleppingTime;
+    }
+
     public void runProcess(){
         if(remainingTime > 0){
             remainingTime--;
         }
-        
+
         finished = remainingTime == 0;
     }
-        
+
     public Boolean isFinished(){
         return finished;
+    }
+
+    public void incrementSleepingTime(){
+        sleppingTime++;
     }
 }
