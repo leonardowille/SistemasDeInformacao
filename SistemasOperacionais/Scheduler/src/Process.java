@@ -77,4 +77,9 @@ public class Process {
     public void incrementSleepingTime(){
         sleppingTime++;
     }
+
+    @Override
+    public String toString() {
+        return pid + " - Priority: " + priority;
+    }
 }

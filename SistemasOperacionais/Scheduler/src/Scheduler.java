@@ -1,3 +1,5 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +10,6 @@ import java.util.List;
  */
 
 /**
- *
  * @author gabriel
  */
 public class Scheduler extends Thread {
@@ -54,22 +55,39 @@ public class Scheduler extends Thread {
             SISOPInterface.outputTextArea.append("\n");
             SISOPInterface.outputTextArea.append("TOTAL OF PROCESSES: " + nextPid);
             SISOPInterface.outputTextArea.append("\n");
-            SISOPInterface.outputTextArea.append("AVERAGE TIME IN ROW: " + totalTimeRow / nextPid);
+            SISOPInterface.outputTextArea.append("AVERAGE TIME IN ROW: " + getAverageTimeRow());
         }
+    }
+
+    private BigDecimal getAverageTimeRow() {
+        return BigDecimal.valueOf(totalTimeRow).divide(BigDecimal.valueOf(nextPid), 2, RoundingMode.HALF_EVEN);
+    }
+
+    private void setRunningProcess(){
+        processes.forEach(process -> {
+                    if (runningProcess == null || process.getPriority() < runningProcess.getPriority())
+                        runningProcess = process;
+                }
+        );
+    }
+
+    private void incrementSleepingTimeProcesses(){
+        processes.stream()
+                .filter(process -> !process.getPid().equals(runningProcess.getPid()))
+                .forEach(Process::incrementSleepingTime);
+    }
+
+    private void finishProcess(){
+        totalTimeRow += runningProcess.getSleppingTime();
+        processes.remove(runningProcess);
+        runningProcess = null;
     }
 
     @Override
     public void run() {
         while (running) {
             try {
-                if (runningProcess == null) {
-                    for (Process p : processes) {
-                        if (!p.isFinished()) {
-                            runningProcess = p;
-                            break;
-                        }
-                    }
-                }
+                setRunningProcess();
 
                 if (runningProcess == null) {
                     printIdleState();
@@ -90,18 +108,10 @@ public class Scheduler extends Thread {
 
                     runningProcess.runProcess();
 
-                    if (running){
-                        for (Process process : processes) {
-                            if (!process.getPid().equals(runningProcess.getPid())) {
-                                process.incrementSleepingTime();
-                            }
-                        }
-                    }
+                    incrementSleepingTimeProcesses();
 
                     if (runningProcess.isFinished()) {
-                        totalTimeRow += runningProcess.getSleppingTime();
-                        processes.remove(runningProcess);
-                        runningProcess = null;
+                        finishProcess();
                     }
                 }
 
