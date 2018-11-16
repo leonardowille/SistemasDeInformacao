@@ -1,0 +1,9 @@
+public class Server implements Runnable {
+
+    @Override
+    public void run() {
+        for (int i = 0; i < LoadBalancer.QTD_PARALLEL_REQUESTS; i++) {
+            new Thread(new Nodo()).start();
+        }
+    }
+}
