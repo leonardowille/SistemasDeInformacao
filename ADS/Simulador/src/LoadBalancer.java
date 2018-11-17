@@ -18,6 +18,15 @@ public class LoadBalancer {
     }
 
     public void start() {
-        new Thread(new Processor()).start();
+        Thread thread = new Thread(new Processor(), "Processor 0");
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("---------------- Average Time: " + LoadBalancer.TOTAL_TIME / LoadBalancer.QTD_REQUETS);
     }
 }
