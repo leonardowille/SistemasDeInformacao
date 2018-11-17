@@ -16,6 +16,7 @@ public class Scheduler extends Thread {
     List<Process> processes = new ArrayList<Process>();
     private Boolean running = true;
     private Integer quantum = 0;
+    private Integer quantumCounter = 0;
     private Process runningProcess;
     private Integer nextPid = 0;
     private Integer currentTime = 0;
@@ -64,11 +65,31 @@ public class Scheduler extends Thread {
     }
 
     private void setRunningProcess(){
-        processes.forEach(process -> {
-                    if (runningProcess == null || process.getPriority() < runningProcess.getPriority())
-                        runningProcess = process;
-                }
-        );
+        Process maxPriority = null;
+        for (Process p: processes){
+            if (maxPriority == null || p.getPriority() < maxPriority.getPriority()){
+                maxPriority = p;
+            }
+        }
+
+        if (maxPriority != null){
+
+            runningProcess = new Process(-1, 0, 0, -1);
+            Process process1 = getProcess(maxPriority);
+
+            if (process1 != null){
+                runningProcess = process1;
+            } else {
+                processes.forEach(process -> process.setQuantumCompleted(false));
+                runningProcess = getProcess(maxPriority);
+            }
+        }
+    }
+
+    private Process getProcess(Process maxPriority) {
+        return processes.stream()
+                .filter(process -> process.getPriority().equals(maxPriority.getPriority()) && !process.getQuantumCompleted())
+                .findFirst().orElse(null);
     }
 
     private void incrementSleepingTimeProcesses(){
@@ -81,6 +102,7 @@ public class Scheduler extends Thread {
         totalTimeRow += runningProcess.getSleppingTime();
         processes.remove(runningProcess);
         runningProcess = null;
+        quantumCounter = 0;
     }
 
     @Override
@@ -106,7 +128,17 @@ public class Scheduler extends Thread {
                     SISOPInterface.outputTextArea.append("REMAINING TIME = "
                             + runningProcess.getRemainingTime());
 
+                    SISOPInterface.outputTextArea.append("\n");
+
+                    SISOPInterface.outputTextArea.append("PRIORITY = "
+                            + runningProcess.getPriority());
+
                     runningProcess.runProcess();
+                    quantumCounter++;
+                    if (quantumCounter.equals(quantum)){
+                        runningProcess.setQuantumCompleted(true);
+                        quantumCounter = 0;
+                    }
 
                     incrementSleepingTimeProcesses();
 

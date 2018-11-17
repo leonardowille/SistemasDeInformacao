@@ -14,8 +14,9 @@ public class Process {
     private Integer totalTime;
     private Integer remainingTime;
     private Integer insertionTime;
-    private Integer sleppingTime = 0;
+    private Integer sleppingTime;
     private Boolean finished;
+    private Boolean quantumCompleted;
 
     public Process(Integer pid, Integer priority, Integer totalTime, Integer currentTime) {
         this.pid = pid;
@@ -24,6 +25,8 @@ public class Process {
         this.remainingTime = totalTime;
         this.finished = false;
         this.insertionTime = currentTime;
+        this.sleppingTime = 0;
+        this.quantumCompleted = false;
     }
 
     /**
@@ -60,6 +63,14 @@ public class Process {
 
     public Integer getSleppingTime() {
         return sleppingTime;
+    }
+
+    public Boolean getQuantumCompleted() {
+        return quantumCompleted;
+    }
+
+    public void setQuantumCompleted(Boolean quantumCompleted) {
+        this.quantumCompleted = quantumCompleted;
     }
 
     public void runProcess(){
