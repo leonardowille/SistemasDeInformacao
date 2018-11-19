@@ -27,3 +27,5 @@ hs_err_pid*
 *.iml
 
 *.kotlin_module
+
+*\out/

@@ -9,7 +9,7 @@ public class Server implements Runnable {
         List<Thread> threads = new ArrayList<>();
 
         for (int i = 1; i <= LoadBalancer.QTD_PARALLEL_REQUESTS; i++) {
-            threads.add(new Thread(new Node(), "Node " + i));
+            threads.add(new Thread(new Node(), Thread.currentThread().getName() + " - Node " + i));
         }
 
         for (Thread t : threads) {

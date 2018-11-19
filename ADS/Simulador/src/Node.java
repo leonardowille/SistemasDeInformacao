@@ -9,6 +9,7 @@ public class Node implements Runnable {
 
         System.out.println("START: " + Thread.currentThread().getName());
 
+//        || LoadBalancer.REQUESTS_FINISHED.size() == 0
         while (LoadBalancer.REQUESTS.size() > 0) {
 
             try {
