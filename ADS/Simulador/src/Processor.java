@@ -8,8 +8,8 @@ public class Processor implements Runnable {
         System.out.println("START: " + Thread.currentThread().getName());
         List<Thread> threads = new ArrayList<>();
 
-        for (int i = 0; i < LoadBalancer.QTD_SERVERS; i++) {
-            threads.add(new Thread(new Server(), "Server "+i));
+        for (int i = 1; i <= LoadBalancer.QTD_SERVERS; i++) {
+            threads.add(new Thread(new Server(), "Server " + i));
         }
 
         for (Thread t: threads) {

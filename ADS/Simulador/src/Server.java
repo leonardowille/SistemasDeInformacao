@@ -8,8 +8,8 @@ public class Server implements Runnable {
         System.out.println("START: " + Thread.currentThread().getName());
         List<Thread> threads = new ArrayList<>();
 
-        for (int i = 0; i < LoadBalancer.QTD_PARALLEL_REQUESTS; i++) {
-            threads.add(new Thread(new Node(), "Node "+i));
+        for (int i = 1; i <= LoadBalancer.QTD_PARALLEL_REQUESTS; i++) {
+            threads.add(new Thread(new Node(), "Node " + i));
         }
 
         for (Thread t : threads) {
