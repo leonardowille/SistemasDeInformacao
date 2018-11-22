@@ -3,7 +3,6 @@ import java.util.Date;
 public class Request {
 
     private Long startedTime;
-    private Long finishedTime;
     private Long totalTime;
 
     public Request() {
@@ -11,16 +10,7 @@ public class Request {
     }
 
     public void finishRequest() {
-        this.finishedTime = new Date().getTime();
-        this.totalTime = finishedTime - startedTime;
-    }
-
-    public Long getStartedTime() {
-        return startedTime;
-    }
-
-    public Long getFinishedTime() {
-        return finishedTime;
+        this.totalTime = new Date().getTime() - startedTime;
     }
 
     public Long getTotalTime() {

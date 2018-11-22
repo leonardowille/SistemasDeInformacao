@@ -5,7 +5,6 @@ public class Processor implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("START: " + Thread.currentThread().getName());
         List<Thread> threads = new ArrayList<>();
 
         for (int i = 1; i <= LoadBalancer.QTD_SERVERS; i++) {
@@ -23,6 +22,5 @@ public class Processor implements Runnable {
                 e.printStackTrace();
             }
         }
-        System.out.println("END: " + Thread.currentThread().getName());
     }
 }
