@@ -1,5 +1,5 @@
 # Problema do Barbeiro Dorminhoco
-	Existe uma barbearia com dois barbeiros e duas cadeiras próprias de barbeiros, também
+Existe uma barbearia com dois barbeiros e duas cadeiras próprias de barbeiros, também
 existe uma série de lugares para que os clientes possam esperar. Caso não tenha
 clientes, os barbeiros sentam em suas cadeiras e dormem. Quando chegarem
 fregueses, enquanto os barbeiros estiverem cortando o cabelo de outro, estes devem
