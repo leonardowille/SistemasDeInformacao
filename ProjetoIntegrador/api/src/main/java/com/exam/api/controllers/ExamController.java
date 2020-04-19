@@ -18,7 +18,13 @@ public class ExamController {
     }
 
     @PostMapping()
-    private Exam saveExam(@RequestBody Exam exam) {
+    @PutMapping()
+    public Exam saveExam(@RequestBody Exam exam) {
         return examRepository.save(exam);
+    }
+
+    @DeleteMapping(value = "{id}")
+    public void deleteExamById(@PathVariable(value = "id") long id) {
+        examRepository.deleteById(id);
     }
 }
