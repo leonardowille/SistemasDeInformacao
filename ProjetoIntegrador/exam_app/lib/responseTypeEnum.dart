@@ -1,0 +1,1 @@
+enum ResponseTypeEnum { SUCCESS, FAIL }

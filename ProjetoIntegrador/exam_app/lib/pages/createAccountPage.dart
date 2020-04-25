@@ -1,12 +1,17 @@
+import 'package:examapp/models/User.dart';
+import 'package:examapp/services/accountService.dart';
 import 'package:examapp/uiComponents/inputComponent.dart';
 import 'package:examapp/validators/emailValidator.dart';
 import 'package:examapp/validators/nameValidator.dart';
 import 'package:examapp/validators/passwordValidator.dart';
 import 'package:flutter/material.dart';
 
+import 'homePage.dart';
+
 class CreateAccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final AccountService accountService = AccountService();
     GlobalKey<FormState> _key = GlobalKey();
     TextEditingController _inputName = TextEditingController();
     TextEditingController _inputEmail = TextEditingController();
@@ -16,10 +21,19 @@ class CreateAccountPage extends StatelessWidget {
       Navigator.pop(context);
     }
 
+    _goToHomePage(context) {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) => HomePage()), (r) => false);
+    }
+
     _submitForm(BuildContext context) {
       if (_key.currentState.validate()) {
+        User user = User();
+        user.name = _inputName.text;
+        user.username = _inputEmail.text;
+        user.password = _inputPassword.text;
         print("Name: ${_inputName.text} / E-mail: ${_inputEmail.text} / Password: ${_inputPassword.text}");
-        _backToLogin(context);
+        accountService.createAccount(user, () => _goToHomePage(context));
       }
     }
 

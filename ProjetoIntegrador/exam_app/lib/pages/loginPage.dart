@@ -1,19 +1,25 @@
+import 'package:examapp/models/User.dart';
 import 'package:examapp/pages/createAccountPage.dart';
 import 'package:examapp/pages/homePage.dart';
+import 'package:examapp/services/accountService.dart';
 import 'package:examapp/uiComponents/inputComponent.dart';
 import 'package:examapp/validators/emailValidator.dart';
 import 'package:examapp/validators/passwordValidator.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
+  final AccountService accountService = AccountService();
   GlobalKey<FormState> _key = GlobalKey();
   TextEditingController _inputLogin = TextEditingController();
   TextEditingController _inputPassword = TextEditingController();
 
   _submitForm(BuildContext context) {
     if (_key.currentState.validate()) {
+      User user = User();
+      user.username = _inputLogin.text;
+      user.password = _inputPassword.text;
       print("Login: ${_inputLogin.text} / Password: ${_inputPassword.text}");
-      _goToHomePage(context);
+      accountService.login(user, () => _goToHomePage(context));
     }
   }
 
@@ -23,8 +29,8 @@ class LoginPage extends StatelessWidget {
   }
 
   _goToHomePage(context) {
-    Navigator.pushAndRemoveUntil(
-        context, MaterialPageRoute(builder: (context) => HomePage()), (r) => false);
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (context) => HomePage()), (r) => false);
   }
 
   @override
