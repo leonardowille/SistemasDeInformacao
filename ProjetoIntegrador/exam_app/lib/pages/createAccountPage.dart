@@ -32,8 +32,9 @@ class CreateAccountPage extends StatelessWidget {
         user.name = _inputName.text;
         user.username = _inputEmail.text;
         user.password = _inputPassword.text;
-        print("Name: ${_inputName.text} / E-mail: ${_inputEmail.text} / Password: ${_inputPassword.text}");
-        accountService.createAccount(user, () => _goToHomePage(context));
+        print(
+            "Name: ${_inputName.text} / E-mail: ${_inputEmail.text} / Password: ${_inputPassword.text}");
+        accountService.createAccount(user, () => _goToHomePage(context), () {});
       }
     }
 

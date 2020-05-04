@@ -1,5 +1,7 @@
-import 'package:examapp/pages/examPage.dart';
+import 'package:examapp/examHandler.dart';
 import 'package:examapp/pages/loginPage.dart';
+import 'package:examapp/services/accountService.dart';
+import 'package:examapp/uiComponents/examsTab.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -8,6 +10,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  AccountService accountService = AccountService();
+
   int _currentItemNavigationIndex = 0;
 
   _updateItemNavigationIndex(int index) {
@@ -16,12 +21,8 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  _goToExam(context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ExamPage()));
-  }
-
   _logout(BuildContext context) {
+    accountService.logout();
     Navigator.pushAndRemoveUntil(context,
         MaterialPageRoute(builder: (context) => LoginPage()), (r) => false);
   }
@@ -46,35 +47,13 @@ class _HomePageState extends State<HomePage> {
   Widget _mainContent() {
     switch (_currentItemNavigationIndex) {
       case 0:
-        return Column(
-          children: <Widget>[
-            Center(
-              child: Container(
-                width: double.infinity,
-                height: 100,
-                child: Text("Gráfico de exames"),
-              ),
-            ),
-            Container(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Text("Listagem de exames"),
-                InkWell(
-                  child: Text("+"),
-                  onTap: () => _goToExam(context),
-                )
-              ],
-            )
-          ],
-        );
+        return ExamTab();
       default:
         return Center(
           child: Column(
             children: <Widget>[
               Text("Perfil - TODO"),
+              Text("Usuário: ${ExamHandler.currentUser.name}"),
               InkWell(
                 onTap: () => _logout(context),
                 child: Text("Logout"),

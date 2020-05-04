@@ -19,7 +19,7 @@ class LoginPage extends StatelessWidget {
       user.username = _inputLogin.text;
       user.password = _inputPassword.text;
       print("Login: ${_inputLogin.text} / Password: ${_inputPassword.text}");
-      accountService.login(user, () => _goToHomePage(context));
+      accountService.login(user, () => _goToHomePage(context), () {});
     }
   }
 
@@ -35,6 +35,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+//    accountService.logout();
     return SafeArea(
       child: Scaffold(
         body: Column(

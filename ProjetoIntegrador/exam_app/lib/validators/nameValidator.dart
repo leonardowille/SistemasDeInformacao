@@ -1,12 +1,12 @@
 import 'package:examapp/validators/validator.dart';
 
-class NameValidator extends Validator {
+import 'notEmptyValidator.dart';
+
+class NameValidator implements Validator {
   @override
   String validate(String value) {
-    if (value.isEmpty) {
-      return 'Please enter some text';
-    }
+    String validate = NotEmptyValidator().validate(value);
     // TODO: build validation
-    return null;
+    return validate;
   }
 }

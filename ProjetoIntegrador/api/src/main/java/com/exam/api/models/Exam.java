@@ -17,5 +17,8 @@ public class Exam implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private String value;
+    private String date;
+    private String glucose;
+    @OneToOne
+    private User user;
 }

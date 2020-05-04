@@ -9,8 +9,13 @@ class SharedPreferencesService {
   }
 
   Future<String> getString(String key) async {
-    return _prefs.then((SharedPreferences prefs) {
+    return await _prefs.then((SharedPreferences prefs) {
       return prefs.get(key);
     });
+  }
+
+  Future<void> removeKey(String key) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.remove(key);
   }
 }

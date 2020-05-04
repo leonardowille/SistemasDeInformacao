@@ -1,3 +1,3 @@
 abstract class Validator {
-  validate(String value);
+  String validate(String value);
 }

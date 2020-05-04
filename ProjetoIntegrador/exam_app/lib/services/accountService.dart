@@ -1,34 +1,37 @@
-import 'package:examapp/api/examApi.dart';
-import 'package:examapp/models/User.dart';
-import 'package:examapp/models/examResponse.dart';
-import 'package:examapp/services/sharedPreferencesService.dart';
+import 'dart:convert';
 
-import '../responseTypeEnum.dart';
+import 'package:examapp/api/examApi.dart';
+import 'package:examapp/examHandler.dart';
+import 'package:examapp/models/User.dart';
+import 'package:examapp/services/sharedPreferencesService.dart';
 
 class AccountService {
   final ExamApi _api = ExamApi();
 
-  createAccount(User user, Function onSuccess) async {
-    ExamResponse examResponse = await _api.createAccount(user);
-    if (ResponseTypeEnum.SUCCESS == examResponse.responseType) {
-      _onAuthenticationSuccess(examResponse.response.toString());
+  createAccount(User user, Function onSuccess, onError) async {
+    await _api.createAccount(user, (response) {
+      _onAuthenticationSuccess(response.toString());
       onSuccess();
-    }
+    }, onError);
   }
 
-  login(User user, Function onSuccess) async {
-    ExamResponse examResponse = await _api.login(user);
-    if (ResponseTypeEnum.SUCCESS == examResponse.responseType) {
-      _onAuthenticationSuccess(examResponse.response.toString());
+  login(User user, Function onSuccess, Function onError) async {
+    await _api.login(user, (response) {
+      _onAuthenticationSuccess(response.toString());
       onSuccess();
-    }
+    }, onError);
+  }
+
+  logout() {
+    SharedPreferencesService().removeKey("jwtAuth");
+    ExamHandler.currentUser = null;
   }
 
   _getCurrentUser() async {
-    ExamResponse examResponse = await _api.getCurrentUser();
-    if (ResponseTypeEnum.SUCCESS == examResponse.responseType) {
-      print(examResponse.toString());
-    }
+    await _api.getCurrentUser(
+        (response) => ExamHandler.currentUser =
+            User.fromJson(JsonDecoder().convert(response.toString())),
+        () {});
   }
 
   _setAuth(String auth) {
