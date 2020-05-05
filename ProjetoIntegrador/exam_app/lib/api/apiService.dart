@@ -58,4 +58,21 @@ class ApiService {
       }
     }
   }
+
+  doDelete(String path, int id, Function onSuccess, Function onError) async {
+    try {
+      Response response = await _dio.delete("$path/$id");
+      onSuccess(response);
+    } on DioError catch(e) {
+      onError();
+      if(e.response != null) {
+        print(e.response.data);
+        print(e.response.headers);
+        print(e.response.request);
+      } else{
+        print(e.request);
+        print(e.message);
+      }
+    }
+  }
 }

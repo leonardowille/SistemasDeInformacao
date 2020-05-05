@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:examapp/api/examApi.dart';
 import 'package:examapp/models/Exam.dart';
 
@@ -12,5 +10,9 @@ class ExamService {
 
   getMyExams(Function onSuccess, Function onError) async {
     await _api.getMyExams(onSuccess, onError);
+  }
+
+  removeExam(int id, Function onSuccess, Function onError) async {
+    await _api.removeExam(id, onSuccess, onError);
   }
 }
