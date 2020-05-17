@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 class ExamPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     ExamService examService = ExamService();
 
     GlobalKey<FormState> _key = GlobalKey();
@@ -20,7 +19,8 @@ class ExamPage extends StatelessWidget {
         exam.date = _inputData.text;
         exam.glucose = _inputGlucose.text;
         print("date: ${_inputData.text} / glucose: ${_inputGlucose.text}");
-        examService.createExam(exam, (response) => print("exame salvo"), () {});
+        examService.createExam(
+            exam, (response) => Navigator.pop(context), () {});
       }
     }
 

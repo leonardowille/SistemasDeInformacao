@@ -4,10 +4,7 @@ import com.exam.api.models.AuthRequest;
 import com.exam.api.models.User;
 import com.exam.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
@@ -29,5 +26,13 @@ public class UserController {
     @GetMapping("/user/current")
     public User getUser() {
         return userService.getCurrentUser();
+    }
+
+    @PutMapping("/user/current")
+    public User updateUser(@RequestBody User user) {
+        User currentUser = userService.getCurrentUser();
+        currentUser.setName(user.getName());
+        currentUser.setBirthday(user.getBirthday());
+        return userService.save(currentUser);
     }
 }

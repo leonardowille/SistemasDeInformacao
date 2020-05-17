@@ -1,50 +1,11 @@
-import 'package:examapp/models/Exam.dart';
 import 'package:examapp/pages/examPage.dart';
-import 'package:examapp/services/examService.dart';
-import 'package:examapp/uiComponents/examListItem.dart';
+import 'package:examapp/uiComponents/examList.dart';
 import 'package:flutter/material.dart';
 
-class ExamTab extends StatefulWidget {
-  @override
-  _ExamTabState createState() => _ExamTabState();
-}
-
-class _ExamTabState extends State<ExamTab> {
-  ExamService examService = ExamService();
-
-  List<Exam> exams = [];
-
+class ExamTab extends StatelessWidget {
   _goToExam(context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => ExamPage()));
-  }
-
-  _getMyExams() {
-    examService.getMyExams((response) {
-      response.data.forEach((examData) {
-        setState(() {
-          this.exams.add(Exam.fromJson(examData));
-        });
-      });
-    }, () {});
-  }
-
-  Widget _listItem() {
-    if (this.exams == null || this.exams.length == 0) {
-      _getMyExams();
-      return Text("Carregando...");
-    }
-    return Container(
-      height: 250,
-      width: double.infinity,
-      color: Colors.green,
-      child: ListView.builder(
-        itemCount: exams.length,
-        itemBuilder: (context, index) {
-          return ExamListItem(exam: exams[index]);
-        },
-      ),
-    );
   }
 
   @override
@@ -76,7 +37,7 @@ class _ExamTabState extends State<ExamTab> {
             ],
           ),
         ),
-        Expanded(flex: 2, child: _listItem()),
+        Expanded(flex: 2, child: ExamList()),
       ],
     );
   }

@@ -25,6 +25,11 @@ class ExamApi {
         onError);
   }
 
+  updateProfile(User user, Function onSuccess, Function onError) async {
+    await _apiService.doPut("/user/current",
+        {"name": user.name, "birthday": user.birthday}, onSuccess, onError);
+  }
+
   getCurrentUser(Function onSuccess, Function onError) async {
     await _apiService.doGet("/user/current", onSuccess, onError);
   }

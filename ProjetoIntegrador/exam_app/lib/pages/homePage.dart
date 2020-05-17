@@ -2,6 +2,7 @@ import 'package:examapp/examHandler.dart';
 import 'package:examapp/pages/loginPage.dart';
 import 'package:examapp/services/accountService.dart';
 import 'package:examapp/uiComponents/examsTab.dart';
+import 'package:examapp/uiComponents/profileTab.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,7 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   AccountService accountService = AccountService();
 
   int _currentItemNavigationIndex = 0;
@@ -19,12 +19,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _currentItemNavigationIndex = index;
     });
-  }
-
-  _logout(BuildContext context) {
-    accountService.logout();
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => LoginPage()), (r) => false);
   }
 
   Widget _bottomNavigationBar() {
@@ -49,18 +43,7 @@ class _HomePageState extends State<HomePage> {
       case 0:
         return ExamTab();
       default:
-        return Center(
-          child: Column(
-            children: <Widget>[
-              Text("Perfil - TODO"),
-              Text("Usuário: ${ExamHandler.currentUser.name}"),
-              InkWell(
-                onTap: () => _logout(context),
-                child: Text("Logout"),
-              )
-            ],
-          ),
-        );
+        return ProfileTab();
     }
   }
 

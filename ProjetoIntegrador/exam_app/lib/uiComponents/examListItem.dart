@@ -6,14 +6,9 @@ class ExamListItem extends StatelessWidget {
   ExamService examService = ExamService();
 
   final Exam exam;
+  final Function removeExam;
 
-  ExamListItem({this.exam});
-
-  _removeExam() {
-    examService.removeExam(exam.id, (response) {
-      print("Exame removido");
-    }, () {});
-  }
+  ExamListItem({this.exam, this.removeExam});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +18,7 @@ class ExamListItem extends StatelessWidget {
           Text(exam.date),
           Text("Glicose: ${exam.glucose}"),
           InkWell(
-            onTap: _removeExam,
+            onTap: removeExam,
             child: Icon(
               Icons.restore_from_trash,
               color: Colors.red,

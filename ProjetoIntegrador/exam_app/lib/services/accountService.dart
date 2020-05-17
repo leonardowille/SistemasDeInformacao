@@ -27,11 +27,22 @@ class AccountService {
     ExamHandler.currentUser = null;
   }
 
+  updateProfile(User user, Function onSuccess, onError) async {
+    await _api.updateProfile(user, (response) {
+      _populateCurrentUserByResponse(response.toString());
+      onSuccess();
+    }, onError);
+  }
+
   _getCurrentUser() async {
     await _api.getCurrentUser(
-        (response) => ExamHandler.currentUser =
-            User.fromJson(JsonDecoder().convert(response.toString())),
+        (response) => _populateCurrentUserByResponse(response.toString()),
         () {});
+  }
+
+  _populateCurrentUserByResponse(String response){
+    ExamHandler.currentUser =
+        User.fromJson(JsonDecoder().convert(response));
   }
 
   _setAuth(String auth) {

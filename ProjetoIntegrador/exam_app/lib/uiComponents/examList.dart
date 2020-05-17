@@ -1,20 +1,51 @@
 import 'package:examapp/models/Exam.dart';
+import 'package:examapp/services/examService.dart';
 import 'package:examapp/uiComponents/examListItem.dart';
 import 'package:flutter/material.dart';
 
-class ExamList extends StatelessWidget {
+class ExamList extends StatefulWidget {
+  @override
+  _ExamListState createState() => _ExamListState();
+}
+
+class _ExamListState extends State<ExamList> {
+  ExamService examService = ExamService();
+
+  List<Exam> exams = [];
+
+  _getMyExams() {
+    examService.getMyExams((response) {
+      response.data.forEach((examData) {
+        setState(() {
+          exams.add(Exam.fromJson(examData));
+        });
+      });
+    }, () {});
+  }
+
+  _removeExam(Exam exam) {
+    examService.removeExam(exam.id, (response) {
+      setState(() {
+        exams.remove(exam);
+      });
+    }, () {});
+  }
 
   @override
   Widget build(BuildContext context) {
-    var exam = Exam();
-    exam.date = "17/10/1997";
-    exam.glucose = "70";
-    return Padding(
-      padding: const EdgeInsets.only(top: 100),
-      child: Container(
-        child: ExamListItem(
-          exam: exam,
-        ),
+    if (exams == null || exams.length == 0) {
+      _getMyExams();
+      return Text("Nenhum exame encontrado.");
+    }
+    return Container(
+      height: 250,
+      width: double.infinity,
+      color: Colors.green,
+      child: ListView.builder(
+        itemCount: exams.length,
+        itemBuilder: (context, index) {
+          return ExamListItem(exam: exams[index], removeExam: () => _removeExam(exams[index]));
+        },
       ),
     );
   }
