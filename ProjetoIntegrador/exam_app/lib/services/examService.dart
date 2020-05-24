@@ -4,8 +4,12 @@ import 'package:examapp/models/Exam.dart';
 class ExamService {
   final ExamApi _api = ExamApi();
 
-  createExam(Exam exam, Function onSuccess, Function onError) async {
-    await _api.createExam(exam, onSuccess, onError);
+  saveExam(Exam exam, Function onSuccess, Function onError) async {
+    if (exam.id == null) {
+      await _api.createExam(exam, onSuccess, onError);
+    } else {
+      await _api.updateExam(exam, onSuccess, onError);
+    }
   }
 
   getMyExams(Function onSuccess, Function onError) async {

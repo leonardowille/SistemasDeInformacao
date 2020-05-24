@@ -39,6 +39,14 @@ class ExamApi {
         {"date": exam.date, "glucose": exam.glucose}, onSuccess, onError);
   }
 
+  updateExam(Exam exam, Function onSuccess, Function onError) async {
+    await _apiService.doPut(
+        "/api/exams",
+        {"id": exam.id, "date": exam.date, "glucose": exam.glucose},
+        onSuccess,
+        onError);
+  }
+
   getMyExams(Function onSuccess, Function onError) async {
     await _apiService.doGet("/api/exams", onSuccess, onError);
   }

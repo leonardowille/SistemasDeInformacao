@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class ExamTab extends StatelessWidget {
   _goToExam(context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ExamPage()));
+        context, MaterialPageRoute(builder: (context) => ExamPage.startPage()));
   }
 
   @override

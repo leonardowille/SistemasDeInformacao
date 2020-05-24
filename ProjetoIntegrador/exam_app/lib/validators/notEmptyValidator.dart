@@ -4,9 +4,8 @@ class NotEmptyValidator extends Validator {
   @override
   String validate(String value) {
     if (value.isEmpty) {
-      return 'Please enter some text';
+      return 'Campo obrigatório.';
     }
-    // TODO: build validation
     return null;
   }
 }

@@ -5,6 +5,10 @@ import 'package:examapp/validators/notEmptyValidator.dart';
 import 'package:flutter/material.dart';
 
 class ExamPage extends StatelessWidget {
+  final Exam exam;
+
+  ExamPage.startPage({exam}) : this.exam = exam ?? Exam();
+
   @override
   Widget build(BuildContext context) {
     ExamService examService = ExamService();
@@ -15,16 +19,16 @@ class ExamPage extends StatelessWidget {
 
     _submitForm(BuildContext context) {
       if (_key.currentState.validate()) {
-        Exam exam = Exam();
         exam.date = _inputData.text;
         exam.glucose = _inputGlucose.text;
         print("date: ${_inputData.text} / glucose: ${_inputGlucose.text}");
-        examService.createExam(
-            exam, (response) => Navigator.pop(context), () {});
+        examService.saveExam(exam, (response) => Navigator.pop(context), () {});
       }
     }
 
     Widget _widgetForm(BuildContext context) {
+      _inputData.text = exam.date;
+      _inputGlucose.text = exam.glucose;
       return Column(
         children: <Widget>[
           InputComponent(

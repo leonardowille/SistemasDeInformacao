@@ -28,8 +28,13 @@ public class ExamController {
     }
 
     @PostMapping()
-    @PutMapping()
     public Exam saveExam(@RequestBody Exam exam) {
+        exam.setUser(userService.getCurrentUser());
+        return examRepository.save(exam);
+    }
+
+    @PutMapping()
+    public Exam updateExam(@RequestBody Exam exam) {
         exam.setUser(userService.getCurrentUser());
         return examRepository.save(exam);
     }
