@@ -51,7 +51,12 @@ class ExamPage extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text(
+            "teste",
+            style: TextStyle(color: Colors.red, fontSize: 14),
+          ),
+        ),
         body: Form(
           key: _key,
           child: _widgetForm(context),

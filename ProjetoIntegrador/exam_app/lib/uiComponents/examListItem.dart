@@ -21,25 +21,59 @@ class ExamListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: <Widget>[
-          Text(exam.date),
-          Text("Glicose: ${exam.glucose}"),
-          InkWell(
-            onTap: removeExam,
-            child: Icon(
-              Icons.restore_from_trash,
-              color: Colors.red,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8, right: 8),
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(
+                    Icons.local_hospital,
+                    size: 36,
+                  ),
+                ),
+              ),
             ),
-          ),
-          InkWell(
-            onTap: () => _editExam(context),
-            child: Icon(
-              Icons.edit,
-              color: Colors.red,
+            Column(
+              children: <Widget>[
+                Text(exam.date),
+                Text("Glicose: ${exam.glucose}"),
+              ],
             ),
-          )
-        ],
+            Spacer(),
+            Row(
+              children: <Widget>[
+                InkWell(
+                  onTap: () => _editExam(context),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.edit,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: removeExam,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.restore_from_trash,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

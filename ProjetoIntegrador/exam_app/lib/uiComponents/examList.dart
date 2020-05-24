@@ -35,16 +35,18 @@ class _ExamListState extends State<ExamList> {
   Widget build(BuildContext context) {
     if (exams == null || exams.length == 0) {
       _getMyExams();
-      return Text("Nenhum exame encontrado.");
+      return Center(
+        child: Text("Nenhum exame encontrado."),
+      );
     }
     return Container(
       height: 250,
       width: double.infinity,
-      color: Colors.green,
       child: ListView.builder(
         itemCount: exams.length,
         itemBuilder: (context, index) {
-          return ExamListItem(exam: exams[index], removeExam: () => _removeExam(exams[index]));
+          return ExamListItem(
+              exam: exams[index], removeExam: () => _removeExam(exams[index]));
         },
       ),
     );
