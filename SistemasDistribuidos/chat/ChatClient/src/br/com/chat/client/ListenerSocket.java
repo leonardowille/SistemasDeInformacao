@@ -5,7 +5,6 @@
 package br.com.chat.client;
 
 import br.com.chat.client.messageProcessor.ClientMessageProcessor;
-import br.com.chat.common.messages.server.ServerDisconnectResponseMessage;
 import br.com.chat.common.messages.Message;
 
 import java.io.IOException;
@@ -41,18 +40,21 @@ public class ListenerSocket implements Runnable {
 			try {
 				message = (Message) in.readObject();
 				clientMessageProcessor.process(message, client);
-
-				if (message instanceof ServerDisconnectResponseMessage) {
-					in.close();
-					socket.close();
-					break;
-				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				closeConnection();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-
 		}
 	}
+
+	public void closeConnection() {
+		try {
+			in.close();
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

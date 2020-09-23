@@ -105,10 +105,8 @@ public class ConnectedClient implements Runnable, Comparable {
 
 	public void disconectUser() {
 		Server.CONNECTED_CLIENTS.remove(this);
-		ServerDisconnectResponseMessage serverDisconnectResponseMessage = new ServerDisconnectResponseMessage();
-		sendMessage(serverDisconnectResponseMessage);
-		sendConnectedUsers();
 		disconnectClient();
+		sendConnectedUsers();
 	}
 
 	private void disconnectClient() {
