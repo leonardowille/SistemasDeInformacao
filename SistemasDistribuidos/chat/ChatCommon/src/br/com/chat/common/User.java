@@ -13,4 +13,9 @@ public class User implements Serializable {
 	public String getNickname() {
 		return nickname;
 	}
+
+	@Override
+	public String toString() {
+		return this.getNickname();
+	}
 }

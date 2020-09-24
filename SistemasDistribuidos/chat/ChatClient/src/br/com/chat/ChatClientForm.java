@@ -1,45 +1,46 @@
 package br.com.chat;
 
 import br.com.chat.client.Client;
+import br.com.chat.common.User;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
-public class ChatClientForm extends JFrame {
+public class ChatClientForm extends JFrame implements ActionListener {
 
 	private JPanel mainPanel;
-	private JButton conectarButton;
+	private JButton connectButton;
 	private JTextField nicknameTextField;
 	private JLabel messageLabel;
+	private JList availableChatList;
+	private JTextArea messageTextField;
+	private JButton sendButton;
+	private JList chatScreenList;
 
 	private Boolean connectedOnServer = false;
 	private Client client = null;
 
-	public ChatClientForm(String title) throws HeadlessException {
+	private final DefaultListModel<User> connectedUsersListModel = new DefaultListModel<>();
+	private final DefaultListModel<String> chatScreenListModel = new DefaultListModel<>();
+
+	public static void main(String[] args) {
+		JFrame frame = new ChatClientForm("Chat");
+		frame.setVisible(true);
+	}
+
+	public ChatClientForm(String title) {
 		super(title);
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setContentPane(mainPanel);
 		this.pack();
-		conectarButton.addActionListener(actionEvent -> {
-			messageLabel.setText("");
-			if (connectedOnServer) {
-				client.disconnectOnServer();
-				client = null;
-				nicknameTextField.setEnabled(true);
-				conectarButton.setText("Conectar");
-				connectedOnServer = !connectedOnServer;
-			} else {
-				if (validateNickname()) {
-					client = new Client();
-					client.start();
-					client.identifyOnServer(nicknameTextField.getText());
-					nicknameTextField.setEnabled(false);
-					conectarButton.setText("Desconectar");
-					connectedOnServer = !connectedOnServer;
-				}
-			}
-		});
+
+		connectButton.addActionListener(this);
+		sendButton.addActionListener(this);
+		availableChatList.setModel(connectedUsersListModel);
+		chatScreenList.setModel(chatScreenListModel);
 	}
 
 	private boolean validateNickname() {
@@ -50,8 +51,50 @@ public class ChatClientForm extends JFrame {
 		return false;
 	}
 
-	public static void main(String[] args) {
-		JFrame frame = new ChatClientForm("Chat");
-		frame.setVisible(true);
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		if (connectButton.equals(event.getSource())) {
+			connectButtonAction();
+		} else if (sendButton.equals(event.getSource())) {
+			sendButtonAction();
+		}
+	}
+
+	private void connectButtonAction() {
+		messageLabel.setText("");
+		if (connectedOnServer) {
+			client.disconnectOnServer();
+			client = null;
+			nicknameTextField.setEnabled(true);
+			connectButton.setText("Conectar");
+			connectedOnServer = !connectedOnServer;
+		} else {
+			if (validateNickname()) {
+				client = new Client(this);
+				client.start();
+				client.identifyOnServer(nicknameTextField.getText());
+				nicknameTextField.setEnabled(false);
+				connectButton.setText("Desconectar");
+				connectedOnServer = !connectedOnServer;
+			}
+		}
+	}
+
+	private void sendButtonAction() {
+		User selectedUser = (User) availableChatList.getSelectedValue();
+		if (selectedUser == null) {
+			client.sendPublicChatMessage(messageTextField.getText());
+		} else {
+			client.sendPrivateChatMessage(selectedUser, messageTextField.getText());
+		}
+	}
+
+	public void addChatMessage(User user, String textMessage) {
+		chatScreenListModel.addElement(user.getNickname() + ": " + textMessage);
+	}
+
+	public void updateConnectedUsers(List<User> connectedUsers) {
+		connectedUsersListModel.clear();
+		connectedUsers.forEach(user -> connectedUsersListModel.addElement(user));
 	}
 }
