@@ -65,6 +65,8 @@ public class ChatClientForm extends JFrame implements ActionListener {
 		if (connectedOnServer) {
 			client.disconnectOnServer();
 			client = null;
+			messageTextField.setEnabled(false);
+			sendButton.setEnabled(false);
 			nicknameTextField.setEnabled(true);
 			connectButton.setText("Conectar");
 			connectedOnServer = !connectedOnServer;
@@ -73,6 +75,8 @@ public class ChatClientForm extends JFrame implements ActionListener {
 				client = new Client(this);
 				client.start();
 				client.identifyOnServer(nicknameTextField.getText());
+				messageTextField.setEnabled(true);
+				sendButton.setEnabled(true);
 				nicknameTextField.setEnabled(false);
 				connectButton.setText("Desconectar");
 				connectedOnServer = !connectedOnServer;
@@ -81,20 +85,29 @@ public class ChatClientForm extends JFrame implements ActionListener {
 	}
 
 	private void sendButtonAction() {
+		if (messageTextField.getText().equals("")){
+			return;
+		}
+
 		User selectedUser = (User) availableChatList.getSelectedValue();
 		if (selectedUser == null) {
 			client.sendPublicChatMessage(messageTextField.getText());
 		} else {
 			client.sendPrivateChatMessage(selectedUser, messageTextField.getText());
 		}
+		messageTextField.setText("");
 	}
 
 	public void addChatMessage(User user, String textMessage) {
-		chatScreenListModel.addElement(user.getNickname() + ": " + textMessage);
+		if (client.getCurrentUser().equals(user)) {
+			chatScreenListModel.addElement(user.getNickname() + " (you): " + textMessage);
+		} else {
+			chatScreenListModel.addElement(user.getNickname() + ": " + textMessage);
+		}
 	}
 
 	public void updateConnectedUsers(List<User> connectedUsers) {
 		connectedUsersListModel.clear();
-		connectedUsers.forEach(user -> connectedUsersListModel.addElement(user));
+		connectedUsers.forEach(connectedUsersListModel::addElement);
 	}
 }

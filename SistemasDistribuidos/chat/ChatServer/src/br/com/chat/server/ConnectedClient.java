@@ -133,5 +133,6 @@ public class ConnectedClient implements Runnable, Comparable {
 
 	public void sendPrivateChatMessage(User target, String textMessage) {
 		sendMessage(new ServerPrivateChatMessageMessage(this.user, textMessage), target);
+		sendMessage(new ServerPrivateChatMessageMessage(this.user, textMessage), this.user);
 	}
 }
