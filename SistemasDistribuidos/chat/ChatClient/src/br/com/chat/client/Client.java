@@ -81,12 +81,16 @@ public class Client {
 		form.updateConnectedUsers(this.connectedUsers);
 	}
 
+	public void erroOnIdentifyOnServer(String messageLabel) {
+		form.setMessageLabel(messageLabel);
+	}
+
 	public User getCurrentUser() {
 		return currentUser;
 	}
 
-	public void setCurrentUser(User currentUser) {
-		this.currentUser = currentUser;
-		System.out.println("currentUser nick: " + currentUser.getNickname());
+	public void identifiedOnServer(User user) {
+		this.currentUser = user;
+		form.setConnectedUser();
 	}
 }

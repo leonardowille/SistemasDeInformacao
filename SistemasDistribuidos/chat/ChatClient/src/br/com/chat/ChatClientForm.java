@@ -47,7 +47,7 @@ public class ChatClientForm extends JFrame implements ActionListener {
 		if (!"".equalsIgnoreCase(nicknameTextField.getText())) {
 			return true;
 		}
-		messageLabel.setText("Informe um apelido");
+		setMessageLabel("Informe um apelido");
 		return false;
 	}
 
@@ -61,7 +61,7 @@ public class ChatClientForm extends JFrame implements ActionListener {
 	}
 
 	private void connectButtonAction() {
-		messageLabel.setText("");
+		setMessageLabel("");
 		if (connectedOnServer) {
 			client.disconnectOnServer();
 			client = null;
@@ -72,15 +72,16 @@ public class ChatClientForm extends JFrame implements ActionListener {
 			connectedOnServer = !connectedOnServer;
 		} else {
 			if (validateNickname()) {
-				client = new Client(this);
-				client.start();
+				startConnection();
 				client.identifyOnServer(nicknameTextField.getText());
-				messageTextField.setEnabled(true);
-				sendButton.setEnabled(true);
-				nicknameTextField.setEnabled(false);
-				connectButton.setText("Desconectar");
-				connectedOnServer = !connectedOnServer;
 			}
+		}
+	}
+
+	private void startConnection() {
+		if (client == null) {
+			client = new Client(this);
+			client.start();
 		}
 	}
 
@@ -109,5 +110,17 @@ public class ChatClientForm extends JFrame implements ActionListener {
 	public void updateConnectedUsers(List<User> connectedUsers) {
 		connectedUsersListModel.clear();
 		connectedUsers.forEach(connectedUsersListModel::addElement);
+	}
+
+	public void setMessageLabel(String messageLabel) {
+		this.messageLabel.setText(messageLabel);
+	}
+
+	public void setConnectedUser() {
+		messageTextField.setEnabled(true);
+		sendButton.setEnabled(true);
+		nicknameTextField.setEnabled(false);
+		connectButton.setText("Desconectar");
+		connectedOnServer = !connectedOnServer;
 	}
 }

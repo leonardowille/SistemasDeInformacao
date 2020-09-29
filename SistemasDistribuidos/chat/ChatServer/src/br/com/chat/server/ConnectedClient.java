@@ -83,14 +83,14 @@ public class ConnectedClient implements Runnable, Comparable {
 		ServerIdentifyResponseMessage serverIdentifyResponseMessage;
 		if (Server.CONNECTED_CLIENTS.stream().anyMatch(connectedClient1 -> connectedClient1.compareTo(user) > 0)) {
 			serverIdentifyResponseMessage = new ServerIdentifyResponseMessage();
-			serverIdentifyResponseMessage.setError("Nickname already in use!");
+			serverIdentifyResponseMessage.setError("Apelido já está em uso!");
 		} else {
 			this.user = user;
 			serverIdentifyResponseMessage = new ServerIdentifyResponseMessage();
 			serverIdentifyResponseMessage.setUser(user);
+			sendConnectedUsers();
 		}
 		sendMessage(serverIdentifyResponseMessage);
-		sendConnectedUsers();
 	}
 
 	private void sendConnectedUsers() {

@@ -12,7 +12,11 @@ public class IdentifyResponseProcessor implements ClientProcessor {
 	public void process(Message message, Client client) {
 		if (message instanceof ServerIdentifyResponseMessage) {
 			ServerIdentifyResponseMessage identificationResponse = (ServerIdentifyResponseMessage) message;
-			client.setCurrentUser(identificationResponse.getUser());
+			if (identificationResponse.getError() != null) {
+				client.erroOnIdentifyOnServer(identificationResponse.getError());
+			} else {
+				client.identifiedOnServer(identificationResponse.getUser());
+			}
 		} else {
 			this.next.process(message, client);
 		}
